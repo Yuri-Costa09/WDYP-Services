@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34916.146
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WdypApplication", "WdypApplication\WdypApplication.csproj", "{551F2223-1021-46C6-82A0-E45924AC7E4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{551F2223-1021-46C6-82A0-E45924AC7E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{551F2223-1021-46C6-82A0-E45924AC7E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{551F2223-1021-46C6-82A0-E45924AC7E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{551F2223-1021-46C6-82A0-E45924AC7E4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CC67149A-99CE-4292-9603-24A79B87FC90}
+	EndGlobalSection
+EndGlobal
