@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WdypApplication.Data;
 using WdypApplication.Models;
@@ -13,11 +13,13 @@ namespace WdypApplication.Controllers
     public class UsersController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly PasswordHasher<User> _passwordHasher;
 
         // adicionar context do DB.
         public UsersController(AppDbContext context)
         {
             _context = context;
+            _passwordHasher = new PasswordHasher<User>();
         }
 
         [HttpGet]
@@ -33,8 +35,7 @@ namespace WdypApplication.Controllers
             return View();
         }
 
-
-        // POST: Users/Create
+        // POST: Users/Register
         // Cadastrar usuario
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -44,9 +45,12 @@ namespace WdypApplication.Controllers
             {
                 var newUser = new User
                 {
-                    Name = model.Name,
-                    PassWord = model.PassWord
+                    UserName = model.Name,
+                    Name = model.Name
                 };
+
+                var hashedPassword = _passwordHasher.HashPassword(newUser, model.PassWord);
+                newUser.PasswordHash = hashedPassword;
 
                 _context.Add(newUser);
                 await _context.SaveChangesAsync();
@@ -64,22 +68,23 @@ namespace WdypApplication.Controllers
             if (ModelState.IsValid)
             {
                 var existingUser = await _context.Users
-                    .FirstOrDefaultAsync(u => u.Name.ToLower() == model.Name.ToLower() && u.PassWord == model.PassWord);
+                    .FirstOrDefaultAsync(u => u.Name.ToLower() == model.Name.ToLower());
 
                 if (existingUser != null)
                 {
-                    // Usuário encontrado, redirecionar para a página inicial ou outra página
-                    return RedirectToAction("Index", "Home");
+                    var result = _passwordHasher.VerifyHashedPassword(existingUser, existingUser.PasswordHash, model.PassWord);
+                    if (result == PasswordVerificationResult.Success)
+                    {
+                        // Usuário encontrado e senha verificada, redirecionar para a página inicial ou outra página
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
-                else
-                {
-                    // Usuário não encontrado, adicionar mensagem de erro
-                    ModelState.AddModelError(string.Empty, "Nome de usuário ou senha inválidos.");
-                }
+
+                // Usuário não encontrado ou senha inválida, adicionar mensagem de erro
+                ModelState.AddModelError(string.Empty, "Nome de usuário ou senha inválidos.");
             }
             return View(model);
         }
-
 
         // GET: Users/Delete/5
         // Deletar usuario

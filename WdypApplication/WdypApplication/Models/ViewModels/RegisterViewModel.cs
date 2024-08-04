@@ -12,6 +12,8 @@ namespace WdypApplication.Models
 
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+
         [Required(ErrorMessage = "Password is required")]
         public string PassWord { get; set; }
 

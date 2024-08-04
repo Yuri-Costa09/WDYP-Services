@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace WdypApplication.Models
 {
-    public class User
+    public class User : IdentityUser
     {
         public int Id { get; set; }
 
@@ -10,20 +11,15 @@ namespace WdypApplication.Models
         [Required(ErrorMessage = "Login is required")]
         public string Name { get; set; }
 
-        [Display(Name = "Password")]
-        [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Password is required")]
-        public string PassWord { get; set; }
-
         public User()
         {
         }
 
-        public User(int id, string name, string passWord)
+        public User(int id, string name)
         {
             Id = id;
             Name = name;
-            PassWord = passWord;
+            
            
         }
     }
