@@ -2,7 +2,7 @@
 
 namespace WdypApplication.Models
 {
-    public class User
+    public class RegisterViewModel
     {
         public int Id { get; set; }
 
@@ -15,16 +15,10 @@ namespace WdypApplication.Models
         [Required(ErrorMessage = "Password is required")]
         public string PassWord { get; set; }
 
-        public User()
-        {
-        }
-
-        public User(int id, string name, string passWord)
-        {
-            Id = id;
-            Name = name;
-            PassWord = passWord;
-           
-        }
+        [Display(Name = "Confirm Password")]
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Confirming Password is required")]
+        [Compare("PassWord", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassWord { get; set; }
     }
 }

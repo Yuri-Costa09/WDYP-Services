@@ -2,10 +2,8 @@
 
 namespace WdypApplication.Models
 {
-    public class User
+    public class LoginViewModel
     {
-        public int Id { get; set; }
-
         [Display(Name = "User Name")]
         [Required(ErrorMessage = "Login is required")]
         public string Name { get; set; }
@@ -14,17 +12,5 @@ namespace WdypApplication.Models
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Password is required")]
         public string PassWord { get; set; }
-
-        public User()
-        {
-        }
-
-        public User(int id, string name, string passWord)
-        {
-            Id = id;
-            Name = name;
-            PassWord = passWord;
-           
-        }
     }
 }

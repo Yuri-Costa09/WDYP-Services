@@ -12,6 +12,6 @@ namespace WdypApplication.Data
         }
         public DbSet<WdypApplication.Models.User> User { get; set; } = default!;
 
-        
+        public DbSet<User> Users { get; set; }
     }
 }

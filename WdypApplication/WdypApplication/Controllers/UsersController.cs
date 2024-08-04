@@ -14,43 +14,75 @@ namespace WdypApplication.Controllers
     {
         private readonly AppDbContext _context;
 
+        // adicionar context do DB.
         public UsersController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Users
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Login()
         {
-            return View("Index", "Home");
+            return View();
         }
 
-        
-
         // GET: Users/Create
+        // Pagina de cadastro de usuario
         public IActionResult Create()
         {
             return View();
         }
 
+
         // POST: Users/Create
-       
+        // Cadastrar usuario
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,PassWord,ConfirmPassWord")] User user)
+        public async Task<IActionResult> Register([Bind("Name,PassWord,ConfirmPassWord")] RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
+                var newUser = new User
+                {
+                    Name = model.Name,
+                    PassWord = model.PassWord
+                };
+
+                _context.Add(newUser);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Home");
             }
-            return View(user);
+            return View(model);
         }
 
-    
+        // POST: Users/Login
+        // Logar usuario
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([Bind("Name,PassWord")] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingUser = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Name.ToLower() == model.Name.ToLower() && u.PassWord == model.PassWord);
+
+                if (existingUser != null)
+                {
+                    // Usuário encontrado, redirecionar para a página inicial ou outra página
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    // Usuário não encontrado, adicionar mensagem de erro
+                    ModelState.AddModelError(string.Empty, "Nome de usuário ou senha inválidos.");
+                }
+            }
+            return View(model);
+        }
+
 
         // GET: Users/Delete/5
+        // Deletar usuario
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
